@@ -1,0 +1,15 @@
+project:
+  type: website
+
+website:
+  title: "BeeSpatial Tutorial"
+  sidebar:
+    style: docked
+    contents:
+      - text: "Welcome"
+        file: index.qmd
+
+format:
+  html:
+    theme: minty
+    toc: true
