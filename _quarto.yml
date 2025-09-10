@@ -8,8 +8,9 @@ website:
     contents:
       - text: "Welcome"
         file: index.qmd
+      - file: introgis.qmd
 
 format:
   html:
-    theme: minty
+    theme: cosmos
     toc: true
