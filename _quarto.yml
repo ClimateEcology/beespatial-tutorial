@@ -9,7 +9,12 @@ website:
     contents:
       - text: "Welcome"
         file: index.qmd
-      - file: introgis.qmd
+      - section: "Getting Started"
+        contents:
+          - introgis.qmd
+      - section: "Part 1: Data prep"
+        contents:
+          - raster.qmd
 
 format:
   html:
