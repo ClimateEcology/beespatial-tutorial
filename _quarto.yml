@@ -14,12 +14,13 @@ website:
           - introgis.qmd
       - section: "Raster data"
         contents:
-          - rasterget.qmd
-          - rasterwork.qmd
+          - rasterGet.qmd
+          - rasterViz.qmd
+          - rasterReclass.qmd
       - section: "Vector data"
         contents:
-          - vectorget.qmd
-          - vectorwork.qmd
+          - vectorGet.qmd
+          - vectorWork.qmd
 
 format:
   html:

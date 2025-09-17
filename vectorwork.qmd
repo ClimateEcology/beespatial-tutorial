@@ -1,5 +1,20 @@
 ---
-title: "vectorwork"
+title: "Work with vector data"
 format: html
 ---
 
+Here are some geoprocessing examples for working with the cropland data layer data from BeeSpatial. We show how to visualize the raster and reclassify land cover values into forage index values in spring.
+
+First, load the necessary packages. More info on these packages and their installation can be found [here](ref.com).
+
+```{r libraries}
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(terra)
+library(tidyterra)
+
+```
