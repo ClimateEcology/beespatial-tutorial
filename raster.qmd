@@ -4,6 +4,155 @@ format: html
 editor: visual
 ---
 
-## Get raster data from beeshiny
+## Get raster data from BeeSpatial
 
 This example shows how to use [**BeeSpatial**](https://beesuite.psu.edu/beespatial/) to download the cropland data layer (CDL) raster for **Centre County, Pennsylvania** for the year **2021**.
+
+First, load the necessary packages. More info on these packages and their installation can be found [here](ref.com).
+
+```{r libraries}
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(terra)
+library(tidyterra)
+
+```
+
+## Read in raster data
+
+Downloaded data from BeeSpatial is packaged as a zipped file ending in *.zip*. Opening this file, you should find a *.tif* raster file:
+
+**CDL_2021_FIPS_42027.tif**
+
+This filename indicates the data type, in this case CDL, the year and the FIPS code that corresponds to the county you selected.
+
+The first thing we will do is use the `rast()` function to read the .tif file into R as a `SpatRaster` object. **For the code below to work, you must use your own filepath for the .tif file.**
+
+```{r create_SpatRaster_of_cdl}
+
+centre_cdl <- rast("data/CDL_2021_FIPS_42027.tif")    # change the filepath to reflect where you've stored the data
+
+centre_cdl
+```
+
+An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (ex WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.
+
+Rasters downloaded from BeeSpatial inherit their CRS from the raster they were originally extracted from.
+
+Let's view the CRS for your county cdl:
+
+```{r crs}
+crs(centre_cdl)
+```
+
+We can see that our CDL raster is using the North American Datum of 1983 as its model for the shape of the earth. Our two-dimensional projection model of earth's 3d surface is Alber's Equal Area and the units of our coordinates are in meters.
+
+## Visualize raster data
+
+We can visualize our county CDl raster by using the base R `plot` function:
+
+```{r base}
+plot(centre_cdl)
+```
+
+We'll talk about other plotting options such as using the packages `ggplot2` and `tidyterra` a little later.
+
+### Reclass to named CDL classes
+
+Right now we are viewing the raw numeric codes of the CDL. These codes mean something: the crop land cover class. We can tell `terra` what these codes mean so that it will show the land cover class names rather than the raw values. The information for these land cover values (along with their colors) are stored in a [color table downloadable here](http.test).
+
+```{r load_coltab}
+cdl_colormap <- read.csv("data/cdl_colormap.csv")   # read in the table from your download location
+
+head(cdl_colormap)  # use `head()` to take a look at the first 5 rows of cdl_colormap
+```
+
+We set the levels of the raster to the land cover class names using the relevant elements of `cdl_colormap`: 'value' (column 1) and 'class_name' (column 6).
+
+```{r def_level}
+levels(centre_cdl) <- cdl_colormap[,c(1,6)]
+
+plot(centre_cdl)  # plot, as above, but now R knows what the numeric values mean
+```
+
+Then we can recolor the classes to match the traditional [NASS CDL style](https://www.nass.usda.gov/Research_and_Science/Cropland/docs/US_2023_CDL_legend.jpg).
+
+This color information is stored in columns 2-5 of the `cdl_colormap` table, representing red, green, blue, and alpha (transparency) values. We use the function `coltab` to supply the color map with this information in columns that are in this specific order, plus the corresponding (raw) raster value as the first column (they are already set up as the first 5 columns of `cdl_colormap`)
+
+```{r }
+coltab(centre_cdl) <- cdl_colormap[,1:5]
+
+plot(centre_cdl)  # plot, as above, but now R knows what the numeric values mean and assigns colors
+```
+
+Let's look at some customization options. To do this, we'll be using the `ggplot2` `tidyterra` packages. `ggplot2` plots a little differently from base R. Data elements are layered on top of a base plot using `+` signs and functions that start with `geom_`. Here, we're starting with a blank base plot and adding the spatraster object using `geom_spatraster()`.
+
+```{r ggplot}
+ggplot() +  # blank base plot
+  geom_spatraster(data = centre_cdl, aes(fill = class_name))   # add the spatraster layer
+```
+
+The legend is now quite large but can be easily modified using `ggplot2` `theme` functions.
+
+```{r}
+ggplot() +
+  geom_spatraster(data = centre_cdl, aes(fill = class_name)) +
+  theme(legend.title = element_text(size = 7), # make legend title smaller
+        legend.text = element_text(size = 7), # make legend text smaller
+        legend.key.size = unit(0.25, 'cm'), #make legend color keys smaller
+        legend.position="bottom") # move legend to the bottom of the plot
+```
+
+### Reclass crop land cover to spring floral resources
+
+Up to now, our CDL raster values are still numeric codes that represent crop land cover class from the CDL. We can reclassify these CDL values to the estimated floral resources of each land cover class, based on [Koh et al. (2015)](https://www.pnas.org/doi/abs/10.1073/pnas.1517685113).
+
+A formatted reclassification table based on Koh et al. is [available here](http.test). The table rows connect each CDL value to its corresponding class name and the values for several indices.
+
+```{r read in koh table}
+reclass_table <- read.csv("data/cdl_reclass_koh.csv")  # read in the reclassification table
+
+head(reclass_table)     # take a look at the first 5 rows
+```
+
+A reclassification table assigns the original values of a raster (listed in the first column) to a new value (listed in the second column). This is done using the `classify()` function.
+
+We will select the columns corresponding to the CDL value and the spring floral resources as our original and new values, respectively, for our reclass table. We'll reclassify the Centre County CDL and generate a map of spring floral resources across the county.
+
+```{r reclass to forage}
+centre_floral_sp <- classify(centre_cdl,
+                    reclass_table[,c("value",
+                                     "floral_resources_spring_index")])
+
+plot(centre_floral_sp)
+```
+
+## Inspect raster values
+
+Using the `values()` function we can directly inspect the spring floral values for Centre County. We will set the argument `na.rm=TRUE` so that all the empty cells (outside of the county) are not included. The result of `values()` shows individual grid cell values. In this case we will only extract the first 20 grid cell values.
+
+```{r inspect_values}
+values(centre_floral_sp, na.rm=TRUE)[1:20]   # just the first 20 cells
+```
+
+We can also use some basic summary functions to view the distribution of floral resource values for the county.
+
+```{r summarize_values}
+summary(values(centre_floral_sp, na.rm=TRUE))    # make a summary with the quartiles and the mean
+
+hist(values(centre_floral_sp, na.rm=TRUE))       # make a basic histogram of values
+```
+
+## Write out raster files
+
+We can save our raster files as a .tif using `writeRaster`. For the CDL raster we will save the data in "INT1U" format which will also save the class names and color table.
+
+```{r write_raster}
+writeRaster(centre_cdl, "data/centre_county_cdl_2021.tif", overwrite=TRUE, datatype="INT1U")
+
+writeRaster(centre_floral_sp, "data/centre_county_springfloral_2021.tif", overwrite=TRUE)
+```

@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -155,7 +190,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#get-raster-data-from-beeshiny" id="toc-get-raster-data-from-beeshiny" class="nav-link active" data-scroll-target="#get-raster-data-from-beeshiny">Get raster data from beeshiny</a></li>
+  <li><a href="#get-raster-data-from-beespatial" id="toc-get-raster-data-from-beespatial" class="nav-link active" data-scroll-target="#get-raster-data-from-beespatial">Get raster data from BeeSpatial</a></li>
+  <li><a href="#read-in-raster-data" id="toc-read-in-raster-data" class="nav-link" data-scroll-target="#read-in-raster-data">Read in raster data</a></li>
+  <li><a href="#visualize-raster-data" id="toc-visualize-raster-data" class="nav-link" data-scroll-target="#visualize-raster-data">Visualize raster data</a>
+  <ul class="collapse">
+  <li><a href="#reclass-to-named-cdl-classes" id="toc-reclass-to-named-cdl-classes" class="nav-link" data-scroll-target="#reclass-to-named-cdl-classes">Reclass to named CDL classes</a></li>
+  <li><a href="#reclass-crop-land-cover-to-spring-floral-resources" id="toc-reclass-crop-land-cover-to-spring-floral-resources" class="nav-link" data-scroll-target="#reclass-crop-land-cover-to-spring-floral-resources">Reclass crop land cover to spring floral resources</a></li>
+  </ul></li>
+  <li><a href="#inspect-raster-values" id="toc-inspect-raster-values" class="nav-link" data-scroll-target="#inspect-raster-values">Inspect raster values</a></li>
+  <li><a href="#write-out-raster-files" id="toc-write-out-raster-files" class="nav-link" data-scroll-target="#write-out-raster-files">Write out raster files</a></li>
   </ul>
 </nav>
     </div>
@@ -181,9 +224,242 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="get-raster-data-from-beeshiny" class="level2">
-<h2 class="anchored" data-anchor-id="get-raster-data-from-beeshiny">Get raster data from beeshiny</h2>
+<section id="get-raster-data-from-beespatial" class="level2">
+<h2 class="anchored" data-anchor-id="get-raster-data-from-beespatial">Get raster data from BeeSpatial</h2>
 <p>This example shows how to use <a href="https://beesuite.psu.edu/beespatial/"><strong>BeeSpatial</strong></a> to download the cropland data layer (CDL) raster for <strong>Centre County, Pennsylvania</strong> for the year <strong>2021</strong>.</p>
+<p>First, load the necessary packages. More info on these packages and their installation can be found <a href="ref.com">here</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="read-in-raster-data" class="level2">
+<h2 class="anchored" data-anchor-id="read-in-raster-data">Read in raster data</h2>
+<p>Downloaded data from BeeSpatial is packaged as a zipped file ending in <em>.zip</em>. Opening this file, you should find a <em>.tif</em> raster file:</p>
+<p><strong>CDL_2021_FIPS_42027.tif</strong></p>
+<p>This filename indicates the data type, in this case CDL, the year and the FIPS code that corresponds to the county you selected.</p>
+<p>The first thing we will do is use the <code>rast()</code> function to read the .tif file into R as a <code>SpatRaster</code> object. <strong>For the code below to work, you must use your own filepath for the .tif file.</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>centre_cdl <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/CDL_2021_FIPS_42027.tif"</span>)    <span class="co"># change the filepath to reflect where you've stored the data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>centre_cdl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+size        : 2147, 3167, 1  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : 1467225, 1562235, 2105925, 2170335  (xmin, xmax, ymin, ymax)
+coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
+source      : CDL_2021_FIPS_42027.tif 
+name        : Class_Names 
+min value   :           1 
+max value   :         254 </code></pre>
+</div>
+</div>
+<p>An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (ex WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.</p>
+<p>Rasters downloaded from BeeSpatial inherit their CRS from the raster they were originally extracted from.</p>
+<p>Let’s view the CRS for your county cdl:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crs</span>(centre_cdl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "PROJCRS[\"NAD83 / Conus Albers\",\n    BASEGEOGCRS[\"NAD83\",\n        DATUM[\"North American Datum 1983\",\n            ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4269]],\n    CONVERSION[\"Conus Albers\",\n        METHOD[\"Albers Equal Area\",\n            ID[\"EPSG\",9822]],\n        PARAMETER[\"Latitude of false origin\",23,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8821]],\n        PARAMETER[\"Longitude of false origin\",-96,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8822]],\n        PARAMETER[\"Latitude of 1st standard parallel\",29.5,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8823]],\n        PARAMETER[\"Latitude of 2nd standard parallel\",45.5,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8824]],\n        PARAMETER[\"Easting at false origin\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8826]],\n        PARAMETER[\"Northing at false origin\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8827]]],\n    CS[Cartesian,2],\n        AXIS[\"easting (X)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"northing (Y)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Data analysis and small scale data presentation for contiguous lower 48 states.\"],\n        AREA[\"United States (USA) - CONUS onshore - Alabama; Arizona; Arkansas; California; Colorado; Connecticut; Delaware; Florida; Georgia; Idaho; Illinois; Indiana; Iowa; Kansas; Kentucky; Louisiana; Maine; Maryland; Massachusetts; Michigan; Minnesota; Mississippi; Missouri; Montana; Nebraska; Nevada; New Hampshire; New Jersey; New Mexico; New York; North Carolina; North Dakota; Ohio; Oklahoma; Oregon; Pennsylvania; Rhode Island; South Carolina; South Dakota; Tennessee; Texas; Utah; Vermont; Virginia; Washington; West Virginia; Wisconsin; Wyoming.\"],\n        BBOX[24.41,-124.79,49.38,-66.91]],\n    ID[\"EPSG\",5070]]"</code></pre>
+</div>
+</div>
+<p>We can see that our CDL raster is using the North American Datum of 1983 as its model for the shape of the earth. Our two-dimensional projection model of earth’s 3d surface is Alber’s Equal Area and the units of our coordinates are in meters.</p>
+</section>
+<section id="visualize-raster-data" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-raster-data">Visualize raster data</h2>
+<p>We can visualize our county CDl raster by using the base R <code>plot</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(centre_cdl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/base-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We’ll talk about other plotting options such as using the packages <code>ggplot2</code> and <code>tidyterra</code> a little later.</p>
+<section id="reclass-to-named-cdl-classes" class="level3">
+<h3 class="anchored" data-anchor-id="reclass-to-named-cdl-classes">Reclass to named CDL classes</h3>
+<p>Right now we are viewing the raw numeric codes of the CDL. These codes mean something: the crop land cover class. We can tell <code>terra</code> what these codes mean so that it will show the land cover class names rather than the raw values. The information for these land cover values (along with their colors) are stored in a <a href="http.test">color table downloadable here</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cdl_colormap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cdl_colormap.csv"</span>)   <span class="co"># read in the table from your download location</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cdl_colormap)  <span class="co"># use `head()` to take a look at the first 5 rows of cdl_colormap</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  value red green blue alpha class_name
+1     0   0     0    0   255 Background
+2     1 255   211    0   255       Corn
+3     2 255    38   38   255     Cotton
+4     3   0   168  228   255       Rice
+5     4 255   158   11   255    Sorghum
+6     5  38   112    0   255   Soybeans</code></pre>
+</div>
+</div>
+<p>We set the levels of the raster to the land cover class names using the relevant elements of <code>cdl_colormap</code>: ‘value’ (column 1) and ‘class_name’ (column 6).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(centre_cdl) <span class="ot">&lt;-</span> cdl_colormap[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">6</span>)]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(centre_cdl)  <span class="co"># plot, as above, but now R knows what the numeric values mean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/def_level-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Then we can recolor the classes to match the traditional <a href="https://www.nass.usda.gov/Research_and_Science/Cropland/docs/US_2023_CDL_legend.jpg">NASS CDL style</a>.</p>
+<p>This color information is stored in columns 2-5 of the <code>cdl_colormap</code> table, representing red, green, blue, and alpha (transparency) values. We use the function <code>coltab</code> to supply the color map with this information in columns that are in this specific order, plus the corresponding (raw) raster value as the first column (they are already set up as the first 5 columns of <code>cdl_colormap</code>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coltab</span>(centre_cdl) <span class="ot">&lt;-</span> cdl_colormap[,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(centre_cdl)  <span class="co"># plot, as above, but now R knows what the numeric values mean and assigns colors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s look at some customization options. To do this, we’ll be using the <code>ggplot2</code> <code>tidyterra</code> packages. <code>ggplot2</code> plots a little differently from base R. Data elements are layered on top of a base plot using <code>+</code> signs and functions that start with <code>geom_</code>. Here, we’re starting with a blank base plot and adding the spatraster object using <code>geom_spatraster()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span>  <span class="co"># blank base plot</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> centre_cdl, <span class="fu">aes</span>(<span class="at">fill =</span> class_name))   <span class="co"># add the spatraster layer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;SpatRaster&gt; resampled to 500797 cells.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/ggplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The legend is now quite large but can be easily modified using <code>ggplot2</code> <code>theme</code> functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> centre_cdl, <span class="fu">aes</span>(<span class="at">fill =</span> class_name)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), <span class="co"># make legend title smaller</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), <span class="co"># make legend text smaller</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">'cm'</span>), <span class="co">#make legend color keys smaller</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>) <span class="co"># move legend to the bottom of the plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;SpatRaster&gt; resampled to 500797 cells.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="reclass-crop-land-cover-to-spring-floral-resources" class="level3">
+<h3 class="anchored" data-anchor-id="reclass-crop-land-cover-to-spring-floral-resources">Reclass crop land cover to spring floral resources</h3>
+<p>Up to now, our CDL raster values are still numeric codes that represent crop land cover class from the CDL. We can reclassify these CDL values to the estimated floral resources of each land cover class, based on <a href="https://www.pnas.org/doi/abs/10.1073/pnas.1517685113">Koh et al.&nbsp;(2015)</a>.</p>
+<p>A formatted reclassification table based on Koh et al.&nbsp;is <a href="http.test">available here</a>. The table rows connect each CDL value to its corresponding class name and the values for several indices.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reclass_table <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cdl_reclass_koh.csv"</span>)  <span class="co"># read in the reclassification table</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reclass_table)     <span class="co"># take a look at the first 5 rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  value class_name nesting_ground_availability_index
+1     0 Background                         0.0000000
+2     1       Corn                         0.1451854
+3     2     Cotton                         0.3355898
+4     3       Rice                         0.1513067
+5     4    Sorghum                         0.1451854
+6     5   Soybeans                         0.1993286
+  nesting_cavity_availability_index nesting_stem_availability_index
+1                        0.00000000                       0.0000000
+2                        0.08947642                       0.1069437
+3                        0.22867787                       0.2335293
+4                        0.13945144                       0.1089976
+5                        0.08947642                       0.1069437
+6                        0.11568643                       0.1263174
+  nesting_wood_availability_index floral_resources_spring_index
+1                       0.0000000                    0.00000000
+2                       0.1026114                    0.09025383
+3                       0.2774442                    0.39644857
+4                       0.1024528                    0.11008896
+5                       0.1026114                    0.09025383
+6                       0.1470606                    0.24359554
+  floral_resources_summer_index floral_resources_fall_index
+1                     0.0000000                   0.0000000
+2                     0.2747074                   0.1323095
+3                     0.3160415                   0.1655815
+4                     0.2821817                   0.1334781
+5                     0.2747074                   0.1323095
+6                     0.3971508                   0.1858675</code></pre>
+</div>
+</div>
+<p>A reclassification table assigns the original values of a raster (listed in the first column) to a new value (listed in the second column). This is done using the <code>classify()</code> function.</p>
+<p>We will select the columns corresponding to the CDL value and the spring floral resources as our original and new values, respectively, for our reclass table. We’ll reclassify the Centre County CDL and generate a map of spring floral resources across the county.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>centre_floral_sp <span class="ot">&lt;-</span> <span class="fu">classify</span>(centre_cdl,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                    reclass_table[,<span class="fu">c</span>(<span class="st">"value"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"floral_resources_spring_index"</span>)])</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(centre_floral_sp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/reclass to forage-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="inspect-raster-values" class="level2">
+<h2 class="anchored" data-anchor-id="inspect-raster-values">Inspect raster values</h2>
+<p>Using the <code>values()</code> function we can directly inspect the spring floral values for Centre County. We will set the argument <code>na.rm=TRUE</code> so that all the empty cells (outside of the county) are not included. The result of <code>values()</code> shows individual grid cell values. In this case we will only extract the first 20 grid cell values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">values</span>(centre_floral_sp, <span class="at">na.rm=</span><span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]   <span class="co"># just the first 20 cells</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.5848480 0.0000000 0.6965277 0.5848480 0.0000000 0.0000000 0.6965277
+ [8] 0.5848480 0.0000000 0.0000000 0.6965277 0.6965277 0.6965277 0.0000000
+[15] 0.0000000 0.0000000 0.6965277 0.6965277 0.5848480 0.0000000</code></pre>
+</div>
+</div>
+<p>We can also use some basic summary functions to view the distribution of floral resource values for the county.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">values</span>(centre_floral_sp, <span class="at">na.rm=</span><span class="cn">TRUE</span>))    <span class="co"># make a summary with the quartiles and the mean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   class_name    
+ Min.   :0.0000  
+ 1st Qu.:0.4558  
+ Median :0.6965  
+ Mean   :0.5813  
+ 3rd Qu.:0.6965  
+ Max.   :0.6993  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">values</span>(centre_floral_sp, <span class="at">na.rm=</span><span class="cn">TRUE</span>))       <span class="co"># make a basic histogram of values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="raster_files/figure-html/summarize_values-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="write-out-raster-files" class="level2">
+<h2 class="anchored" data-anchor-id="write-out-raster-files">Write out raster files</h2>
+<p>We can save our raster files as a .tif using <code>writeRaster</code>. For the CDL raster we will save the data in “INT1U” format which will also save the class names and color table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(centre_cdl, <span class="st">"data/centre_county_cdl_2021.tif"</span>, <span class="at">overwrite=</span><span class="cn">TRUE</span>, <span class="at">datatype=</span><span class="st">"INT1U"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(centre_floral_sp, <span class="st">"data/centre_county_springfloral_2021.tif"</span>, <span class="at">overwrite=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
