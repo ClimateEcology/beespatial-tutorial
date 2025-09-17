@@ -12,9 +12,14 @@ website:
       - section: "Getting Started"
         contents:
           - introgis.qmd
-      - section: "Part 1: Data prep"
+      - section: "Raster data"
         contents:
-          - raster.qmd
+          - rasterget.qmd
+          - rasterwork.qmd
+      - section: "Vector data"
+        contents:
+          - vectorget.qmd
+          - vectorwork.qmd
 
 format:
   html:
