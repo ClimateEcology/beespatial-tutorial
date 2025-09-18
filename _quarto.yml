@@ -9,20 +9,19 @@ website:
     contents:
       - text: "Welcome"
         file: index.qmd
-      - section: "Getting Started"
+      - section: "How to use BeeSpatial"
+        contents:
+          - BeeSpatialBound.qmd
+          - BeeSpatialPts.qmd
+      - section: "Working with BeeSpatial data in R"
         contents:
           - introgis.qmd
-      - section: "Raster data"
-        contents:
-          - rasterGet.qmd
           - rasterViz.qmd
           - rasterReclass.qmd
-      - section: "Vector data"
-        contents:
-          - vectorGet.qmd
           - vectorWork.qmd
 
 format:
   html:
     theme: cosmos
     toc: true
+    css: styles.css

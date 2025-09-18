@@ -1,6 +1,0 @@
----
-title: "Get raster data from BeeSpatial"
-format: html
----
-
-This pages shows how to use [**BeeSpatial**](https://beesuite.psu.edu/beespatial/) to download the cropland data layer (CDL) raster for **Centre County, Pennsylvania** for the year **2021**.
