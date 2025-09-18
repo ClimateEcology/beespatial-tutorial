@@ -11,11 +11,16 @@ The first screen of BeeSpatial allows users to choose locations:
 
 ![Choose locations screen](images/Boundary1.png)
 
-The user's progress is indicated in the sidebar ![](images/circle1.png){.center}. To download raster data, choose **Select geographic boundaries** ![](images/circle2.png){.center} in the "Choose locations" section. Since we are downloading a county, select "County" under **Administrative level** ![](images/circle3.png){.center}. Select the desired **State** ![](images/circle4.png){.center} ("Pennsylvania") and **County** ![](images/circle5.png){.center} ("Centre"). The **Preview locations** map ![](images/circle6.png){.center} shows your selection. Once you've confirmed the correct boundary has been selected, use the navigation button **Choose Variables** ![](images/circle7.png){.center} in the lower right or the sidebar to move to the next step.
+The user's progress is indicated in the sidebar ![](images/circle1.png){.inline}. To download raster data, choose **Select geographic boundaries** ![](images/circle2.png){.inline} in the "Choose locations" section. Since we are downloading a county, select "County" under **Administrative level** ![](images/circle3.png){.inline}. Select the desired **State** ![](images/circle4.png){.inline} ("Pennsylvania") and **County** ![](images/circle5.png){.inline} ("Centre"). The **Preview locations** map ![](images/circle6.png){.inline} shows your selection. Once you've confirmed the correct boundary has been selected, use the navigation button **Choose Variables** ![](images/circle7.png){.inline} in the lower right or the sidebar to move to the next step.
 
 ## Choose variables
 
-![Choose variables](images/Boundary2.png)
+![Choose variables screen](images/Boundary2.png)
 
-We've moved on to the **Choose variable** step in the sidebar ![](images/circle1.png){.center}. We are making a simple selection, so we use the **Bulk Selection** panel ![](images/circle2.png){.center} to select our desired **Data Layers** ![](images/circle3.png){.center} ("Cropland Data Layer") and **Years** ![](images/circle4.png){.center} (2021). Note that if we wanted to make a more complex selection combining different layers and years, this can be done in the **Advanced Options** panel. We're not doing this, so we move on to the next step **Submit Query** using the navigation button ![](images/circle5.png){.center} in the lower right, or the sidebar.
+We've moved on to the **Choose variable** step in the sidebar ![](images/circle1.png){.inline}. We are making a simple selection, so we use the **Bulk Selection** panel ![](images/circle2.png){.inline} to select our desired **Data Layers** ![](images/circle3.png){.inline} ("Cropland Data Layer") and **Years** ![](images/circle4.png){.inline} (2021). Note that if we wanted to make a more complex selection combining different layers and years, this can be done in the **Advanced Options** panel. We're not doing this, so we move on to the next step **Submit Query** using the navigation button ![](images/circle5.png){.inline} in the lower right, or the sidebar.
 
+## Query & View Data
+
+![Query & view data screen](images/boundary3.png)
+
+**Query & View Data** ![](images/circle1.png){.inline} is the final step in the sidebar. With the desired locations and data layers selected, click the **Make Query** button ![](images/circle2.png){.inline} to prepare the data download. Once the data are prepared, a data manifest appears in the **View Data** panel ![](images/circle3.png){.inline} showing the data you are downloading. Finally, click **Download Data** ![](images/circle4.png){.inline} to download a .zip file containing the requested data layers.

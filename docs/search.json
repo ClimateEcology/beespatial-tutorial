@@ -108,7 +108,18 @@
     "href": "BeeSpatialBound.html#choose-variables",
     "title": "Get raster data",
     "section": "Choose variables",
-    "text": "Choose variables\n\n\n\nChoose variables\n\n\nWe’ve moved on to the Choose variable step in the sidebar . We are making a simple selection, so we use the Bulk Selection panel  to select our desired Data Layers  (“Cropland Data Layer”) and Years  (2021). Note that if we wanted to make a more complex selection combining different layers and years, this can be done in the Advanced Options panel. We’re not doing this, so we move on to the next step Submit Query using the navigation button  in the lower right, or the sidebar.",
+    "text": "Choose variables\n\n\n\nChoose variables screen\n\n\nWe’ve moved on to the Choose variable step in the sidebar . We are making a simple selection, so we use the Bulk Selection panel  to select our desired Data Layers  (“Cropland Data Layer”) and Years  (2021). Note that if we wanted to make a more complex selection combining different layers and years, this can be done in the Advanced Options panel. We’re not doing this, so we move on to the next step Submit Query using the navigation button  in the lower right, or the sidebar.",
+    "crumbs": [
+      "How to use BeeSpatial",
+      "Get raster data"
+    ]
+  },
+  {
+    "objectID": "BeeSpatialBound.html#query-view-data",
+    "href": "BeeSpatialBound.html#query-view-data",
+    "title": "Get raster data",
+    "section": "Query & View Data",
+    "text": "Query & View Data\n\n\n\nQuery & view data screen\n\n\nQuery & View Data  is the final step in the sidebar. With the desired locations and data layers selected, click the Make Query button  to prepare the data download. Once the data are prepared, a data manifest appears in the View Data panel  showing the data you are downloading. Finally, click Download Data  to download a .zip file containing the requested data layers.",
     "crumbs": [
       "How to use BeeSpatial",
       "Get raster data"
