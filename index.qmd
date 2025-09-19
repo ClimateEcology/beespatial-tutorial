@@ -1,5 +1,8 @@
 ---
 title: "Welcome to the BeeSpatial Tutorial"
+about:
+  template: solana
+  image: images/BeeSpatial.png
 format: html
 editor: visual
 ---
