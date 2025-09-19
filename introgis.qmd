@@ -1,12 +1,12 @@
 ---
-title: "Necessary concepts and R packages"
+title: "GIS and R prerequisites"
 format: html
 editor: visual
 execute: 
   enabled: false
 ---
 
-This page serves as a brief overview of the GIS concepts and packages to get you up and running with the R-based modules in this tutorial. For more in-depth introduction GIS, you may want to look [elsewhere](https://www.ecologi.st/spatial-r/) on the [web](https://bookdown.org/michael_bcalles/gis-crash-course-in-r/).
+This page serves as a brief overview of the geographic information systems (GIS) concepts and R packages to get you up and running with the R-based modules in this tutorial. For more in-depth introduction GIS in R, you may want to look [elsewhere](https://www.ecologi.st/spatial-r/) on the [web](https://bookdown.org/michael_bcalles/gis-crash-course-in-r/).
 
 ## Terms
 
@@ -19,7 +19,7 @@ This page serves as a brief overview of the GIS concepts and packages to get you
 There are a number of packages in R that are helpful in working with spatial data. For this workshop we will be using `sf` and `terra`. For data wrangling and visualizations we will use `dplyr`, `ggplot2` and `tidyterra`.
 
 | Name | Description | Link |
-|:---|:---|:---|
+|:-----------------------|:-----------------------|:-----------------------|
 | `dplyr` | Package that provides a 'grammar' of data manipulation in `R` | <https://dplyr.tidyverse.org/> |
 | `ggplot2` | Package that provides a system for declaratively creating graphics | <https://ggplot2.tidyverse.org/> |
 | `sf` | Package for manipulating 2-D geographic vector data | <https://r-spatial.github.io/sf/> |

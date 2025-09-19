@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - data/cdl_colormap.csv
+    - data/McNeil_etal_2020_sites_2018-19.csv
 
 website:
   title: "BeeSpatial Tutorial"

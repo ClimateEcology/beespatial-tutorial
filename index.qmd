@@ -4,12 +4,12 @@ format: html
 editor: visual
 ---
 
-[**BeeSpatial**](https://beesuite.psu.edu/beespatial/) is a companion web application to [Beescape](https://beescape.psu.edu/). It provides researchers access to pollinator habitat quality indices that assess nesting suitability, floral resources, toxicity of potentially applied insecticides, and economic value of pollination. It also hosts base data layers on land cover and climate. Data are available from 2008 to the most recent available year.
+[**BeeSpatial**](https://beesuite.psu.edu/beespatial/) is a companion web application to [Beescape](https://beescape.psu.edu/). It provides researchers with access to pollinator habitat quality indices that assess **nesting suitability**, **floral resources**, and **toxicity of potentially applied insecticides**. It also hosts base data layers on **land cover** and **climate**. Data are available from 2008 to the most recent available year (currently 2024).
 
-**BeeSpatial** can be used to query data commonly used when modeling the environmental drivers of species' or community responses.
+There are two ways of getting data from BeeSpatial:
 
-**BeeSpatial** allows users to extract:
+-   [As raster layers covering an administrative area selected by the user](BeeSpatialBound.qmd)
 
--   **Climate data**: monthly precipitation, min, and max temperature from PRISM
--   **Crop land covers**: from the NASS CropLand Data Layer
--   **Beescape indices**: spring forage, summer forage, fall forage, nesting, and pesticides
+-   [As summaries of data values at or around points uploaded by the user](BeeSpatialPts.qmd)
+
+The data from BeeSpatial is a starting point for further analysis. On this website, we provide some basic tutorials on some common geoprocessing steps using [the statistical software R](https://www.r-project.org/).

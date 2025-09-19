@@ -182,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./introgis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Necessary concepts and R packages</span></a>
+ <span class="menu-text">GIS and R prerequisites</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="read-in-raster-data" class="level2">
 <h2 class="anchored" data-anchor-id="read-in-raster-data">Read in raster data</h2>
 <p>Downloaded data from BeeSpatial is packaged as a zipped file ending in <em>.zip</em>. Opening this file, you should find a <em>.tif</em> raster file:</p>
-<p><strong>CDL_2021_FIPS_42027.tif</strong></p>
+<p><code>CDL_2021_FIPS_42027.tif</code></p>
 <p>This filename indicates the data type, in this case CDL, the year and the FIPS code that corresponds to the county you selected.</p>
 <p>The first thing we will do is use the <code>rast()</code> function to read the .tif file into R as a <code>SpatRaster</code> object. <strong>For the code below to work, you must use your own filepath for the .tif file.</strong></p>
 <div class="cell">
@@ -304,7 +304,7 @@ max value   :         254 </code></pre>
 <p>We’ll talk about other plotting options such as using the packages <code>ggplot2</code> and <code>tidyterra</code> a little later.</p>
 <section id="display-cdl-class-names" class="level3">
 <h3 class="anchored" data-anchor-id="display-cdl-class-names">Display CDL class names</h3>
-<p>Right now we are viewing the raw numeric codes of the CDL. These codes mean something: the crop land cover class. We can tell <code>terra</code> what these codes mean so that it will show the land cover class names rather than the raw values. The information for these land cover values (along with their colors) are stored in a <a href="http.test">color table downloadable here</a>.</p>
+<p>Right now we are viewing the raw numeric codes of the CDL. These codes mean something: the crop land cover class. We can tell <code>terra</code> what these codes mean so that it will show the land cover class names rather than the raw values. The information for these land cover values (along with their colors) are stored in a <a href="data/cdl_colormap.csv" download="">color table downloadable here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cdl_colormap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cdl_colormap.csv"</span>)   <span class="co"># read in the table from your download location</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>

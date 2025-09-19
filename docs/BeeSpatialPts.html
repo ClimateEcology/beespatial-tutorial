@@ -147,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./introgis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Necessary concepts and R packages</span></a>
+ <span class="menu-text">GIS and R prerequisites</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -175,8 +175,16 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#choose-locations" id="toc-choose-locations" class="nav-link active" data-scroll-target="#choose-locations">Choose locations</a></li>
+  <li><a href="#choose-variables" id="toc-choose-variables" class="nav-link" data-scroll-target="#choose-variables">Choose variables</a></li>
+  <li><a href="#query-view-data" id="toc-query-view-data" class="nav-link" data-scroll-target="#query-view-data">Query &amp; view data</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -200,8 +208,25 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>To demonstrate the features and workflow of BeeSpatial for evaluating spatial data across multiple sites, we used 59 sites in Pennsylvania, USA from <a href="https://doi.org/10.1038/s41598-020-78119-2">McNeil et al 2020</a>.</p>
+<p><a href="data/McNeil_etal_2020_sites_2018-19.csv" download="">The coordinates for these points are available here</a>.</p>
+<section id="choose-locations" class="level2">
+<h2 class="anchored" data-anchor-id="choose-locations">Choose locations</h2>
+<p><img src="images/Points1.png" class="img-fluid"></p>
+<p>We uploaded the file containing the projected site coordinates in decimal degrees and confirmed the appropriate column names representing the longitude and latitudes as well as unique site identifiers. We then used the preview map to confirm that the locations were in the correct area and not outside of continental US where data are unavailable.</p>
+</section>
+<section id="choose-variables" class="level2">
+<h2 class="anchored" data-anchor-id="choose-variables">Choose variables</h2>
+<p><img src="images/Points2.png" class="img-fluid"></p>
+<p>All available variable options for the years 2018 and 2019 were selected. A 1-km radius was applied to calculate landcover, forage, nesting, and insecticide indices around each location. The forage index was computed for the spring, summer, and fall seasons. Advanced options in BeeSpatial allow for customized combinations of years, radii, and, in the case of forage, seasons, although these were not modified in this example.</p>
+</section>
+<section id="query-view-data" class="level2">
+<h2 class="anchored" data-anchor-id="query-view-data">Query &amp; view data</h2>
+<p><img src="images/Points3.png" class="img-fluid"></p>
+<p>Data extraction and calculations for each location are completed after selecting “Make Query”, after which the resulting data tables can be previewed before downloading.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
