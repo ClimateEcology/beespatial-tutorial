@@ -10,9 +10,9 @@ editor: visual
 
 There are two ways of getting data from BeeSpatial:
 
--   [As raster layers covering an administrative area selected by the user](BeeSpatialBound.qmd)
+-   [Get raster layers covering an administrative area selected by the user](BeeSpatialBound.qmd)
 
--   [As summaries of data values at or around points uploaded by the user](BeeSpatialPts.qmd)
+-   [Get summaries of data values at or around points uploaded by the user](BeeSpatialPts.qmd)
 
 ## Working with BeeSpatial data in R
 
