@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Here we show how to visualize the cropland data layer (CDL) raster.</p>
-<p>First, load the necessary packages. More info on these packages and their installation can be found <a href="ref.com">here</a>.</p>
+<p>First, load the necessary packages. More info on these packages and their installation can be found <a href="./introgis.html#loading-necessary-packages">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -257,6 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="read-in-raster-data" class="level2">
 <h2 class="anchored" data-anchor-id="read-in-raster-data">Read in raster data</h2>
+<p>To work with the data shown in this tutorial, check out the page on <a href="./BeeSpatialBound.html">downloading raster data</a>.</p>
 <p>Downloaded data from BeeSpatial is packaged as a zipped file ending in <em>.zip</em>. Opening this file, you should find a <em>.tif</em> raster file:</p>
 <p><code>CDL_2021_FIPS_42027.tif</code></p>
 <p>This filename indicates the data type, in this case CDL, the year and the FIPS code that corresponds to the county you selected.</p>
@@ -277,7 +278,7 @@ min value   :           1
 max value   :         254 </code></pre>
 </div>
 </div>
-<p>An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (ex WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.</p>
+<p>An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (e.g.&nbsp;WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.</p>
 <p>Rasters downloaded from BeeSpatial inherit their CRS from the raster they were originally extracted from.</p>
 <p>Let’s view the CRS for your county cdl:</p>
 <div class="cell">

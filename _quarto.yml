@@ -21,7 +21,6 @@ website:
           - introgis.qmd
           - rasterViz.qmd
           - rasterReclass.qmd
-          - vectorWork.qmd
 
 format:
   html:

@@ -6,7 +6,7 @@ editor: visual
 
 Here we show how to visualize the cropland data layer (CDL) raster.
 
-First, load the necessary packages. More info on these packages and their installation can be found [here](ref.com).
+First, load the necessary packages. More info on these packages and their installation can be found [here](introgis.qmd#loading-necessary-packages).
 
 ```{r libraries}
 #| message: false
@@ -21,6 +21,8 @@ library(tidyterra)
 ```
 
 ## Read in raster data
+
+To work with the data shown in this tutorial, check out the page on [downloading raster data](BeeSpatialBound.qmd).
 
 Downloaded data from BeeSpatial is packaged as a zipped file ending in *.zip*. Opening this file, you should find a *.tif* raster file:
 
@@ -37,7 +39,7 @@ centre_cdl <- rast("data/CDL_2021_FIPS_42027.tif")    # change the filepath to r
 centre_cdl
 ```
 
-An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (ex WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.
+An important attribute of spatial data are their Coordinate Reference System or CRS. This information tells us what model of the earth (e.g. WGS84 or NAD83) is being referenced as well as the units of the coordinates such as decimal degrees.
 
 Rasters downloaded from BeeSpatial inherit their CRS from the raster they were originally extracted from.
 

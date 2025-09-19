@@ -6,20 +6,20 @@ execute:
   enabled: false
 ---
 
-This page serves as a brief overview of the geographic information systems (GIS) concepts and R packages to get you up and running with the R-based modules in this tutorial. For more in-depth introduction GIS in R, you may want to look [elsewhere](https://www.ecologi.st/spatial-r/) on the [web](https://bookdown.org/michael_bcalles/gis-crash-course-in-r/).
+## GIS basics
 
-## Terms
+Before working with the data layers from BeeSpatial in R, here are some geographic information systems (GIS) terms and concepts that are necessary to understand. For a more in-depth introduction to GIS in R, you may want to look [elsewhere](https://www.ecologi.st/spatial-r/) on the [web](https://bookdown.org/michael_bcalles/gis-crash-course-in-r/).
 
 -   **raster:** A form of geographic data that represents the landscape as a grid of cells. Grid values can be continuous values, signifying things like elevation, temperature, or spectral information (e.g. color) in a satellite image; or categorical values, signifying thematic classes like land cover.
 -   **vector:** Another form of geographic data that represents specific features on the landscape composed of discrete geometric locations that consist of x and y values. These can be points, lines, or polygons.
 -   **Cropland Data Layer (CDL):** A set of raster datasets produced by the USDA National Agricultural Statistics (NASS) Service and Agricultural Research Service (ARS) that represents annual crop-specific land cover produced from satellite imagery and ground reference data.
 
-## Load necessary packages
+## Loading necessary packages
 
 There are a number of packages in R that are helpful in working with spatial data. For this workshop we will be using `sf` and `terra`. For data wrangling and visualizations we will use `dplyr`, `ggplot2` and `tidyterra`.
 
 | Name | Description | Link |
-|:-----------------------|:-----------------------|:-----------------------|
+|:---|:---|:---|
 | `dplyr` | Package that provides a 'grammar' of data manipulation in `R` | <https://dplyr.tidyverse.org/> |
 | `ggplot2` | Package that provides a system for declaratively creating graphics | <https://ggplot2.tidyverse.org/> |
 | `sf` | Package for manipulating 2-D geographic vector data | <https://r-spatial.github.io/sf/> |
