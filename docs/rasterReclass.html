@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Here are some geoprocessing examples for reclassifying the cropland data layer (CDL) data from BeeSpatial. BeeSpatial provides forage, nesting, and insecticide rasters as buffered summaries using distance-weighted means of 1, 3, and 5km radius buffers. This means that each pixel of the raster represents the distance-weighted mean of the index values within the corresponding buffer radius.</p>
 <p>However, if you only need forage, nesting, or insecticide values themselves instead of buffer summaries, you can obtain this through reclassifying the CDL. This tutorial shows how to do that.</p>
-<p>First, load the necessary packages. More info on these packages and their installation can be found <a href="ref.com">here</a>.</p>
+<p>First, load the necessary packages. More info on these packages and their installation can be found <a href="./introgis.html#loading-necessary-packages">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -254,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reclass-crop-land-cover-to-spring-floral-resources" class="level3">
 <h3 class="anchored" data-anchor-id="reclass-crop-land-cover-to-spring-floral-resources">Reclass crop land cover to spring floral resources</h3>
 <p>The CDL raster values are numeric codes that represent crop land cover class from the CDL. We can reclassify these CDL values to the estimated floral resources of each land cover class, based on <a href="https://www.pnas.org/doi/abs/10.1073/pnas.1517685113">Koh et al.&nbsp;(2015)</a>.</p>
-<p>A formatted reclassification table based on Koh et al.&nbsp;is <a href="http.test">available here</a>. The table rows connect each CDL value to its corresponding class name and the values for several indices.</p>
+<p>A formatted reclassification table based on Koh et al.&nbsp;is <a href="data/cdl_reclass_koh.csv" download="">available here</a>. The table rows connect each CDL value to its corresponding class name and the values for several indices.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>reclass_table <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cdl_reclass_koh.csv"</span>)  <span class="co"># read in the reclassification table</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>

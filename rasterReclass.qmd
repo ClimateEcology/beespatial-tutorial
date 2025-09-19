@@ -7,7 +7,7 @@ Here are some geoprocessing examples for reclassifying the cropland data layer (
 
 However, if you only need forage, nesting, or insecticide values themselves instead of buffer summaries, you can obtain this through reclassifying the CDL. This tutorial shows how to do that.
 
-First, load the necessary packages. More info on these packages and their installation can be found [here](ref.com).
+First, load the necessary packages. More info on these packages and their installation can be found [here](introgis.qmd#loading-necessary-packages).
 
 ```{r libraries}
 #| message: false
@@ -33,7 +33,7 @@ centre_cdl <- rast("data/CDL_2021_FIPS_42027.tif")    # change the filepath to r
 
 The CDL raster values are numeric codes that represent crop land cover class from the CDL. We can reclassify these CDL values to the estimated floral resources of each land cover class, based on [Koh et al. (2015)](https://www.pnas.org/doi/abs/10.1073/pnas.1517685113).
 
-A formatted reclassification table based on Koh et al. is [available here](http.test). The table rows connect each CDL value to its corresponding class name and the values for several indices.
+A formatted reclassification table based on Koh et al. is <a href="data/cdl_reclass_koh.csv" download>available here</a>. The table rows connect each CDL value to its corresponding class name and the values for several indices.
 
 ```{r read in koh table}
 reclass_table <- read.csv("data/cdl_reclass_koh.csv")  # read in the reclassification table
