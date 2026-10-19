@@ -9,9 +9,9 @@ editor: visual
 
 [**BeeSpatial**](https://beesuite.psu.edu/beespatial/) is a companion web application to [Beescape](https://beescape.psu.edu/). It provides researchers with access to pollinator habitat quality indices that assess **nesting suitability**, **floral resources**, and **toxicity of potentially applied insecticides**. It also hosts base data layers on **land cover** and **climate**. Data are available from 2008 to the most recent available year (currently 2025).
 
-Check out our open-access publication about these applications:
+**Check out our open-access publication about these applications:**
 
-Li K, Grab H, Buckner MA, et al (2026) Beescape and BeeSpatial: Making multi-scale environmental indicators of bee habitat accessible across audiences. *Environmental and Sustainability Indicators* 31:101381. [https://doi.org/10.1016/j.indic.2026.101381](https://doi.org/10.1016/j.indic.2026.101381)
+Li, K., Grab, H., Buckner, M. A., Houtman, L., Kammerer, M., McLaughlin, D., Ostroski, A., Douglas, M. R., Goslee, S. C., Khanna, V., Lonsdorf, E. V., Robinson, A. C., & Grozinger, C. M. (2026). *Beescape* and *BeeSpatial*: Making multi-scale environmental indicators of bee habitat accessible across audiences. *Environmental and Sustainability Indicators*, 31, 101381. [https://doi.org/10.1016/j.indic.2026.101381](https://doi.org/10.1016/j.indic.2026.101381)
 
 ## How to use BeeSpatial
 
