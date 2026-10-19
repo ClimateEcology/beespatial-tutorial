@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Extracting buffers – BeeSpatial Tutorial</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b2c493fdd487b110f6b1348dfd6a5174.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-05671fd07ca6d6876311839a4a0c21df.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -252,15 +258,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
 <p>First, load the necessary packages. More info on these packages and their installation can be found <a href="./introgis.html#loading-necessary-packages">here</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Read in the CDL data downloaded from BeeSpatial.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>centre_cdl <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/CDL_2021_FIPS_42027.tif"</span>)    <span class="co"># change the filepath to reflect where you've stored the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>centre_cdl <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/CDL_2021_FIPS_42027.tif"</span>)    <span class="co"># change the filepath to reflect where you've stored the data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="read-in-point-data" class="level2">
@@ -268,8 +274,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Often we collect and store point data as coordinates in a non-spatial format such as a csv file which we need to convert into a spatial object in R.</p>
 <p>In the /data directory you should find a csv file with a set of points from Centre County Pa. We will read in and inspect these data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>centre_sites <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/centre_co_pts.csv"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>centre_sites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>centre_sites <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/centre_co_pts.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>centre_sites</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  SiteID      Long      Lat
 1  Site1 -77.70654 40.80497
@@ -284,13 +290,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>and convert them into an sf spatial object. We use the <code>coords=</code> argument to indicate the columns that hold the longitude (X) and latitude (Y). We can also specify the CRS using the ‘crs=’ arguments and the appropriate EPSG code or other crs object. In our case we will give the EPSG code 4326 which corresponds to WGS 84, the system commonly used by Google Earth.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>centre_sites <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(centre_sites, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>centre_sites <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(centre_sites, </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">coords=</span><span class="fu">c</span>(<span class="st">"Long"</span>,<span class="st">"Lat"</span>), <span class="co">#indicate the x and y columns</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">crs =</span> <span class="dv">4326</span>) <span class="co">#set the crs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">crs =</span> <span class="dv">4326</span>) <span class="co">#set the crs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>when we inspect the center_sites object we see that there is now additional information at the top.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>centre_sites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>centre_sites</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 8 features and 1 field
 Geometry type: POINT
@@ -313,7 +319,7 @@ Geodetic CRS:  WGS 84
 <h2 class="anchored" data-anchor-id="visualize-point-data">Visualize point data</h2>
 <p>Using <code>ggplot2</code> and <code>sf</code> we can add our points to our earlier map of Centre county with the <code>geom_sf()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Centre county CDL from raster exercise</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Centre county CDL from raster exercise</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>centre_cdl <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/centre_county_cdl_2021.tif"</span>) </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
@@ -322,7 +328,7 @@ Geodetic CRS:  WGS 84
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), </span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), </span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">'cm'</span>),</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>&lt;SpatRaster&gt; resampled to 500797 cells.</code></pre>
 </div>
@@ -339,8 +345,8 @@ Geodetic CRS:  WGS 84
 <h2 class="anchored" data-anchor-id="buffer-around-points">Buffer around points</h2>
 <p>We can create a polygon object from our points by buffering around them in a 1000m radius. For example, we might do this when assessing land cover values around a site.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>centre_sites_1000m <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(centre_sites, <span class="dv">1000</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>centre_sites_1000m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>centre_sites_1000m <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(centre_sites, <span class="dv">1000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>centre_sites_1000m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 8 features and 1 field
 Geometry type: POLYGON
@@ -360,14 +366,14 @@ Geodetic CRS:  WGS 84
 </div>
 <p>We can visualize this buffer by adding it to our plot. Note you may need to expand your plot size to see the buffers behind the points.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> centre_cdl, <span class="fu">aes</span>(<span class="at">fill =</span> class_name)) <span class="sc">+</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> centre_sites_1000m)<span class="sc">+</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>centre_sites) <span class="sc">+</span> </span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), </span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), </span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">'cm'</span>),</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"bottom"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>&lt;SpatRaster&gt; resampled to 500797 cells.</code></pre>
 </div>
@@ -384,448 +390,213 @@ Geodetic CRS:  WGS 84
 <h2 class="anchored" data-anchor-id="extract-cdl-values-within-buffers">Extract CDL values within buffers</h2>
 <p>If we wanted to assess land cover around a site in a way that is similar to the results that beeshiny provides, we can use the <code>extract()</code> function from terra. First providing the raster we want to extract values from, then the sf object that defines the zones in which the raster will the summarized.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m <span class="ot">&lt;-</span> <span class="fu">extract</span>(centre_cdl, centre_sites_1000m, <span class="at">fun=</span><span class="st">"table"</span>, <span class="at">ID=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(centre_cdl, centre_sites_1000m,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fun=</span><span class="st">"table"</span>, <span class="at">ID=</span>F, <span class="at">wide =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: [extract] transforming vector data to the CRS of the raster</code></pre>
+<pre><code>Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster
+Warning: [extract] transforming vector data to the CRS of the raster</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Background Corn Cotton Rice Sorghum Soybeans Sunflower Peanuts Tobacco
-1          0 1241      0    0      12     1021         0       0       0
-2          0 1167      0    0       0      968         0       0       0
-3          0    0      0    0       0        0         0       0       0
-4          0   64      0    0       0       80         0       0       0
-5          0   18      0    0       1        5         0       0       0
-6          0  882      0    0       1      836         0       0       0
-7          0    0      0    0       0        0         0       0       0
-8          0   92      0    0       0        0         0       0       0
-  Sweet Corn Pop or Orn Corn Mint Barley Durum Wheat Spring Wheat Winter Wheat
-1          0               0    0      0           0            0          225
-2          0               0    0      7           0            0          445
-3          0               0    0      0           0            0            0
-4          0               0    0      1           0            0            7
-5          0               0    0      0           0            0            1
-6          0               0    0      1           0            0           24
-7          0               0    0      0           0            0            0
-8          0               0    0      0           0            0            0
-  Other Small Grains Dbl Crop WinWht/Soybeans Rye Oats Millet Speltz Canola
-1                  0                        0   2   20      0      0      0
-2                  0                        0   7  136      0      0      0
-3                  0                        0   0    0      0      0      0
-4                  0                        0   0    0      0      0      0
-5                  0                        0   0    0      0      0      0
-6                  0                        0   0    0      0      0      0
-7                  0                        0   0    0      0      0      0
-8                  0                        0   0    0      0      0      0
-  Flaxseed Safflower Rape Seed Mustard Alfalfa Other Hay/Non Alfalfa Camelina
-1        0         0         0       0     156                    88        0
-2        0         0         0       0     100                    29        0
-3        0         0         0       0       0                     0        0
-4        0         0         0       0      82                   410        0
-5        0         0         0       0       2                    50        0
-6        0         0         0       0     124                   407        0
-7        0         0         0       0       0                     0        0
-8        0         0         0       0       4                    25        0
-  Buckwheat Sugarbeets Dry Beans Potatoes Other Crops Sugarcane Sweet Potatoes
-1         0          0        43        0           0         0              0
-2         0          0       118        0           0         0              0
-3         0          0         0        0           0         0              0
-4         0          0         0        0           0         0              0
-5         0          0         1        0           0         0              0
-6         0          0         0        0           0         0              0
-7         0          0         0        0           0         0              0
-8         0          0         0        0           0         0              0
-  Misc Vegs &amp; Fruits Watermelons Onions Cucumbers Chick Peas Lentils Peas
-1                  0           0      0         0          0       0    0
-2                  0           0      0         0          0       0    0
-3                  0           0      0         0          0       0    0
-4                  0           0      0         0          0       0    0
-5                  0           0      0         0          0       0    0
-6                  0           0      0         0          0       0    0
-7                  0           0      0         0          0       0    0
-8                  0           0      0         0          0       0    0
-  Tomatoes Caneberries Hops Herbs Clover/Wildflowers Sod/Grass Seed Switchgrass
-1        0           0    0     0                  0              0           0
-2        0           0    0     0                  0              0           0
-3        0           0    0     0                  0              0           0
-4        1           0    0     0                  0              0           0
-5        1           0    0     0                  0              0           0
-6        0           0    0     0                  0              0           0
-7        0           0    0     0                  0              0           0
-8        0           0    0     0                  0              0           0
-  Fallow/Idle Cropland Forest Cherries Peaches Apples Grapes Christmas Trees
-1                    0      0        0       0      0      0               0
-2                    0      0        0       0      0      0               0
-3                    0      0        0       0      0      0               0
-4                    0      0        0       0      1      0               0
-5                    0      0        0       0      0      0               0
-6                    0      0        0       0      1      0               0
-7                    0      0        0       0      0      0               0
-8                    0      0        0       0      0      0               0
-  Other Tree Crops Citrus Pecans Almonds Walnuts Pears Clouds/No Data Developed
-1                0      0      0       0       0     0              0         0
-2                0      0      0       0       0     0              0         0
-3                0      0      0       0       0     0              0         0
-4                0      0      0       0       0     0              0         0
-5                0      0      0       0       0     0              0         0
-6                0      0      0       0       0     0              0         0
-7                0      0      0       0       0     0              0         0
-8                0      0      0       0       0     0              0         0
-  Water Wetlands Nonag/Undefined Aquaculture Open Water Perennial Ice/Snow
-1     0        0               0           0          0                  0
-2     0        0               0           0          0                  0
-3     0        0               0           0          0                  0
-4     0        0               0           0          0                  0
-5     0        0               0           0       1621                  0
-6     0        0               0           0          0                  0
-7     0        0               0           0          0                  0
-8     0        0               0           0          0                  0
-  Developed/Open Space Developed/Low Intensity Developed/Med Intensity
-1                  224                      69                      22
-2                   52                      95                      45
-3                  208                       9                       2
-4                  298                     367                     401
-5                  172                      95                      33
-6                  299                     214                      22
-7                  135                       1                       0
-8                  162                       8                       1
-  Developed/High Intensity Barren Deciduous Forest Evergreen Forest
-1                        2      4              178               10
-2                        8      0              116                1
-3                        0      0             3263                1
-4                      137      1              474              106
-5                        0      7              391               35
-6                        4      1              236                6
-7                        0      0             3358                9
-8                        0      7             2216              533
-  Mixed Forest Shrubland Grassland/Pasture Woody Wetlands Herbaceous Wetlands
-1           22         0               213              0                   0
-2           12         0               241              0                   0
-3           56         0                 9              0                   0
-4          303         1               806              0                   0
-5          692         1               415              5                   1
-6           56         1               437              0                   0
-7           37         5                 4              0                   0
-8          458         1                36              5                   0
-  Pistachios Triticale Carrots Asparagus Garlic Cantaloupes Prunes Olives
-1          0         0       0         0      0           0      0      0
-2          0         2       0         0      0           0      0      0
-3          0         0       0         0      0           0      0      0
-4          0         1       0         0      0           0      0      0
-5          0         1       0         0      0           0      0      0
-6          0         0       0         0      0           0      0      0
-7          0         0       0         0      0           0      0      0
-8          0         0       0         0      0           0      0      0
-  Oranges Honeydew Melons Broccoli Avocados Peppers Pomegranates Nectarines
-1       0               0        0        0       0            0          0
-2       0               0        0        0       0            0          0
-3       0               0        0        0       0            0          0
-4       0               0        0        0       0            0          0
-5       0               0        0        0       0            0          0
-6       0               0        0        0       0            0          0
-7       0               0        0        0       0            0          0
-8       0               0        0        0       0            0          0
-  Greens Plums Strawberries Squash Apricots Vetch Dbl Crop WinWht/Corn
-1      0     0            0      0        0     0                    0
-2      0     0            0      0        0     0                    2
-3      0     0            0      0        0     0                    0
-4      0     0            0      0        0     0                    3
-5      0     0            0      0        0     0                    0
-6      0     0            0      0        0     0                    0
-7      0     0            0      0        0     0                    0
-8      0     0            0      0        0     0                    0
-  Dbl Crop Oats/Corn Lettuce Dbl Crop Triticale/Corn Pumpkins
-1                  0       0                       0        0
-2                  0       0                       0        0
-3                  0       0                       0        0
-4                  0       0                       1        1
-5                  1       0                       0        0
-6                  0       0                       0        0
-7                  0       0                       0        0
-8                  0       0                       0        0
-  Dbl Crop Lettuce/Durum Wht Dbl Crop Lettuce/Cantaloupe
-1                          0                           0
-2                          0                           0
-3                          0                           0
-4                          0                           0
-5                          0                           0
-6                          0                           0
-7                          0                           0
-8                          0                           0
-  Dbl Crop Lettuce/Cotton Dbl Crop Lettuce/Barley Dbl Crop Durum Wht/Sorghum
-1                       0                       0                          0
-2                       0                       0                          0
-3                       0                       0                          0
-4                       0                       0                          0
-5                       0                       0                          0
-6                       0                       0                          0
-7                       0                       0                          0
-8                       0                       0                          0
-  Dbl Crop Barley/Sorghum Dbl Crop WinWht/Sorghum Dbl Crop Barley/Corn
-1                       0                       0                    0
-2                       0                       0                    0
-3                       0                       0                    0
-4                       0                       1                    0
-5                       0                       0                    0
-6                       0                       0                    0
-7                       0                       0                    0
-8                       0                       0                    0
-  Dbl Crop WinWht/Cotton Dbl Crop Soybeans/Cotton Dbl Crop Soybeans/Oats
-1                      0                        0                      0
-2                      0                        0                      0
-3                      0                        0                      0
-4                      0                        0                      0
-5                      0                        0                      0
-6                      0                        0                      0
-7                      0                        0                      0
-8                      0                        0                      0
-  Dbl Crop Corn/Soybeans Blueberries Cabbage Cauliflower Celery Radishes
-1                      0           0       0           0      0        0
-2                      0           0       0           0      0        0
-3                      0           0       0           0      0        0
-4                      0           0       0           0      0        0
-5                      0           0       0           0      0        0
-6                      0           0       0           0      0        0
-7                      0           0       0           0      0        0
-8                      0           0       0           0      0        0
-  Turnips Eggplants Gourds Cranberries Dbl Crop Barley/Soybeans
-1       0         0      0           0                        0
-2       0         0      0           0                        0
-3       0         0      0           0                        0
-4       0         0      0           0                        0
-5       0         0      0           0                        0
-6       0         0      0           0                        0
-7       0         0      0           0                        0
-8       0         0      0           0                        0</code></pre>
+<pre><code>  count.Corn count.Sorghum count.Soybeans count.Winter Wheat count.Rye
+1       1241            12           1021                225         2
+2       1167             0            968                445         7
+3          0             0              0                  0         0
+4         64             0             80                  7         0
+5         18             1              5                  1         0
+6        882             1            836                 24         0
+7          0             0              0                  0         0
+8         92             0              0                  0         0
+  count.Oats count.Alfalfa count.Other Hay/Non Alfalfa count.Dry Beans
+1         20           156                          88              43
+2        136           100                          29             118
+3          0             0                           0               0
+4          0            82                         410               0
+5          0             2                          50               1
+6          0           124                         407               0
+7          0             0                           0               0
+8          0             4                          25               0
+  count.Developed/Open Space count.Developed/Low Intensity
+1                        224                            69
+2                         52                            95
+3                        208                             9
+4                        298                           367
+5                        172                            95
+6                        299                           214
+7                        135                             1
+8                        162                             8
+  count.Developed/Med Intensity count.Developed/High Intensity count.Barren
+1                            22                              2            4
+2                            45                              8            0
+3                             2                              0            0
+4                           401                            137            1
+5                            33                              0            7
+6                            22                              4            1
+7                             0                              0            0
+8                             1                              0            7
+  count.Deciduous Forest count.Evergreen Forest count.Mixed Forest
+1                    178                     10                 22
+2                    116                      1                 12
+3                   3263                      1                 56
+4                    474                    106                303
+5                    391                     35                692
+6                    236                      6                 56
+7                   3358                      9                 37
+8                   2216                    533                458
+  count.Grassland/Pasture count.Barley count.Triticale
+1                     213            0               0
+2                     241            7               2
+3                       9            0               0
+4                     806            1               1
+5                     415            0               1
+6                     437            1               0
+7                       4            0               0
+8                      36            0               0
+  count.Dbl Crop WinWht/Corn count.Tomatoes count.Apples count.Shrubland
+1                          0              0            0               0
+2                          2              0            0               0
+3                          0              0            0               0
+4                          3              1            1               1
+5                          0              1            0               1
+6                          0              0            1               1
+7                          0              0            0               5
+8                          0              0            0               1
+  count.Dbl Crop Triticale/Corn count.Pumpkins count.Dbl Crop WinWht/Sorghum
+1                             0              0                             0
+2                             0              0                             0
+3                             0              0                             0
+4                             1              1                             1
+5                             0              0                             0
+6                             0              0                             0
+7                             0              0                             0
+8                             0              0                             0
+  count.Open Water count.Woody Wetlands count.Herbaceous Wetlands
+1                0                    0                         0
+2                0                    0                         0
+3                0                    0                         0
+4                0                    0                         0
+5             1621                    5                         1
+6                0                    0                         0
+7                0                    0                         0
+8                0                    5                         0
+  count.Dbl Crop Oats/Corn
+1                        0
+2                        0
+3                        0
+4                        0
+5                        1
+6                        0
+7                        0
+8                        0</code></pre>
 </div>
 </div>
 <p>We can calculate additional statistics such as the area within the buffer for each site.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Area_m2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(centre_table_1000m)<span class="sc">*</span><span class="dv">900</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Area_m2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(centre_table_1000m)<span class="sc">*</span><span class="dv">900</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>and turn our table into proportional cover of different land classes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m_prop <span class="ot">&lt;-</span> centre_table_1000m<span class="sc">/</span><span class="fu">rowSums</span>(centre_table_1000m)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>centre_table_1000m_prop <span class="ot">&lt;-</span> centre_table_1000m<span class="sc">/</span><span class="fu">rowSums</span>(centre_table_1000m)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>centre_table_1000m_prop <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Area_m2,centre_table_1000m_prop)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>centre_table_1000m_prop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>centre_table_1000m_prop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Area_m2 Background        Corn Cotton Rice      Sorghum    Soybeans Sunflower
-1 3196800          0 0.349380631      0    0 0.0033783784 0.287443694         0
-2 3195900          0 0.328639820      0    0 0.0000000000 0.272599268         0
-3 3193200          0 0.000000000      0    0 0.0000000000 0.000000000         0
-4 3192300          0 0.018043417      0    0 0.0000000000 0.022554271         0
-5 3194100          0 0.005071851      0    0 0.0002817695 0.001408848         0
-6 3196800          0 0.248310811      0    0 0.0002815315 0.235360360         0
-7 3194100          0 0.000000000      0    0 0.0000000000 0.000000000         0
-8 3193200          0 0.025930101      0    0 0.0000000000 0.000000000         0
-  Peanuts Tobacco Sweet Corn Pop or Orn Corn Mint       Barley Durum Wheat
-1       0       0          0               0    0 0.0000000000           0
-2       0       0          0               0    0 0.0019712757           0
-3       0       0          0               0    0 0.0000000000           0
-4       0       0          0               0    0 0.0002819284           0
-5       0       0          0               0    0 0.0000000000           0
-6       0       0          0               0    0 0.0002815315           0
-7       0       0          0               0    0 0.0000000000           0
-8       0       0          0               0    0 0.0000000000           0
-  Spring Wheat Winter Wheat Other Small Grains Dbl Crop WinWht/Soybeans
-1            0 0.0633445946                  0                        0
-2            0 0.1253168122                  0                        0
-3            0 0.0000000000                  0                        0
-4            0 0.0019734987                  0                        0
-5            0 0.0002817695                  0                        0
-6            0 0.0067567568                  0                        0
-7            0 0.0000000000                  0                        0
-8            0 0.0000000000                  0                        0
-           Rye        Oats Millet Speltz Canola Flaxseed Safflower Rape Seed
-1 0.0005630631 0.005630631      0      0      0        0         0         0
-2 0.0019712757 0.038299071      0      0      0        0         0         0
-3 0.0000000000 0.000000000      0      0      0        0         0         0
-4 0.0000000000 0.000000000      0      0      0        0         0         0
-5 0.0000000000 0.000000000      0      0      0        0         0         0
-6 0.0000000000 0.000000000      0      0      0        0         0         0
-7 0.0000000000 0.000000000      0      0      0        0         0         0
-8 0.0000000000 0.000000000      0      0      0        0         0         0
-  Mustard     Alfalfa Other Hay/Non Alfalfa Camelina Buckwheat Sugarbeets
-1       0 0.043918919           0.024774775        0         0          0
-2       0 0.028161081           0.008166714        0         0          0
-3       0 0.000000000           0.000000000        0         0          0
-4       0 0.023118128           0.115590640        0         0          0
-5       0 0.000563539           0.014088476        0         0          0
-6       0 0.034909910           0.114583333        0         0          0
-7       0 0.000000000           0.000000000        0         0          0
-8       0 0.001127396           0.007046223        0         0          0
-     Dry Beans Potatoes Other Crops Sugarcane Sweet Potatoes Misc Vegs &amp; Fruits
-1 0.0121058559        0           0         0              0                  0
-2 0.0332300760        0           0         0              0                  0
-3 0.0000000000        0           0         0              0                  0
-4 0.0000000000        0           0         0              0                  0
-5 0.0002817695        0           0         0              0                  0
-6 0.0000000000        0           0         0              0                  0
-7 0.0000000000        0           0         0              0                  0
-8 0.0000000000        0           0         0              0                  0
-  Watermelons Onions Cucumbers Chick Peas Lentils Peas     Tomatoes Caneberries
-1           0      0         0          0       0    0 0.0000000000           0
-2           0      0         0          0       0    0 0.0000000000           0
-3           0      0         0          0       0    0 0.0000000000           0
-4           0      0         0          0       0    0 0.0002819284           0
-5           0      0         0          0       0    0 0.0002817695           0
-6           0      0         0          0       0    0 0.0000000000           0
-7           0      0         0          0       0    0 0.0000000000           0
-8           0      0         0          0       0    0 0.0000000000           0
-  Hops Herbs Clover/Wildflowers Sod/Grass Seed Switchgrass Fallow/Idle Cropland
-1    0     0                  0              0           0                    0
-2    0     0                  0              0           0                    0
-3    0     0                  0              0           0                    0
-4    0     0                  0              0           0                    0
-5    0     0                  0              0           0                    0
-6    0     0                  0              0           0                    0
-7    0     0                  0              0           0                    0
-8    0     0                  0              0           0                    0
-  Forest Cherries Peaches       Apples Grapes Christmas Trees Other Tree Crops
-1      0        0       0 0.0000000000      0               0                0
-2      0        0       0 0.0000000000      0               0                0
-3      0        0       0 0.0000000000      0               0                0
-4      0        0       0 0.0002819284      0               0                0
-5      0        0       0 0.0000000000      0               0                0
-6      0        0       0 0.0002815315      0               0                0
-7      0        0       0 0.0000000000      0               0                0
-8      0        0       0 0.0000000000      0               0                0
-  Citrus Pecans Almonds Walnuts Pears Clouds/No Data Developed Water Wetlands
-1      0      0       0       0     0              0         0     0        0
-2      0      0       0       0     0              0         0     0        0
-3      0      0       0       0     0              0         0     0        0
-4      0      0       0       0     0              0         0     0        0
-5      0      0       0       0     0              0         0     0        0
-6      0      0       0       0     0              0         0     0        0
-7      0      0       0       0     0              0         0     0        0
-8      0      0       0       0     0              0         0     0        0
-  Nonag/Undefined Aquaculture Open Water Perennial Ice/Snow
-1               0           0  0.0000000                  0
-2               0           0  0.0000000                  0
-3               0           0  0.0000000                  0
-4               0           0  0.0000000                  0
-5               0           0  0.4567484                  0
-6               0           0  0.0000000                  0
-7               0           0  0.0000000                  0
-8               0           0  0.0000000                  0
-  Developed/Open Space Developed/Low Intensity Developed/Med Intensity
-1           0.06306306            0.0194256757            0.0061936937
-2           0.01464376            0.0267530273            0.0126724866
-3           0.05862458            0.0025366404            0.0005636979
-4           0.08401466            0.1034677192            0.1130532845
-5           0.04846436            0.0267681037            0.0092983939
-6           0.08417793            0.0602477477            0.0061936937
-7           0.03803888            0.0002817695            0.0000000000
-8           0.04565953            0.0022547914            0.0002818489
-  Developed/High Intensity       Barren Deciduous Forest Evergreen Forest
-1             0.0005630631 0.0011261261       0.05011261     0.0028153153
-2             0.0022528865 0.0000000000       0.03266685     0.0002816108
-3             0.0000000000 0.0000000000       0.91967306     0.0002818489
-4             0.0386241895 0.0002819284       0.13363406     0.0298844094
-5             0.0000000000 0.0019723866       0.11017188     0.0098619329
-6             0.0011261261 0.0002815315       0.06644144     0.0016891892
-7             0.0000000000 0.0000000000       0.94618202     0.0025359256
-8             0.0000000000 0.0019729425       0.62457723     0.1502254791
-  Mixed Forest    Shrubland Grassland/Pasture Woody Wetlands
-1  0.006193694 0.0000000000       0.059966216    0.000000000
-2  0.003379330 0.0000000000       0.067868206    0.000000000
-3  0.015783540 0.0000000000       0.002536640    0.000000000
-4  0.085424302 0.0002819284       0.227234282    0.000000000
-5  0.194984503 0.0002817695       0.116934348    0.001408848
-6  0.015765766 0.0002815315       0.123029279    0.000000000
-7  0.010425472 0.0014088476       0.001127078    0.000000000
-8  0.129086809 0.0002818489       0.010146561    0.001409245
-  Herbaceous Wetlands Pistachios    Triticale Carrots Asparagus Garlic
-1        0.0000000000          0 0.0000000000       0         0      0
-2        0.0000000000          0 0.0005632216       0         0      0
-3        0.0000000000          0 0.0000000000       0         0      0
-4        0.0000000000          0 0.0002819284       0         0      0
-5        0.0002817695          0 0.0002817695       0         0      0
-6        0.0000000000          0 0.0000000000       0         0      0
-7        0.0000000000          0 0.0000000000       0         0      0
-8        0.0000000000          0 0.0000000000       0         0      0
-  Cantaloupes Prunes Olives Oranges Honeydew Melons Broccoli Avocados Peppers
-1           0      0      0       0               0        0        0       0
-2           0      0      0       0               0        0        0       0
-3           0      0      0       0               0        0        0       0
-4           0      0      0       0               0        0        0       0
-5           0      0      0       0               0        0        0       0
-6           0      0      0       0               0        0        0       0
-7           0      0      0       0               0        0        0       0
-8           0      0      0       0               0        0        0       0
-  Pomegranates Nectarines Greens Plums Strawberries Squash Apricots Vetch
-1            0          0      0     0            0      0        0     0
-2            0          0      0     0            0      0        0     0
-3            0          0      0     0            0      0        0     0
-4            0          0      0     0            0      0        0     0
-5            0          0      0     0            0      0        0     0
-6            0          0      0     0            0      0        0     0
-7            0          0      0     0            0      0        0     0
-8            0          0      0     0            0      0        0     0
-  Dbl Crop WinWht/Corn Dbl Crop Oats/Corn Lettuce Dbl Crop Triticale/Corn
-1         0.0000000000       0.0000000000       0            0.0000000000
-2         0.0005632216       0.0000000000       0            0.0000000000
-3         0.0000000000       0.0000000000       0            0.0000000000
-4         0.0008457852       0.0000000000       0            0.0002819284
-5         0.0000000000       0.0002817695       0            0.0000000000
-6         0.0000000000       0.0000000000       0            0.0000000000
-7         0.0000000000       0.0000000000       0            0.0000000000
-8         0.0000000000       0.0000000000       0            0.0000000000
-      Pumpkins Dbl Crop Lettuce/Durum Wht Dbl Crop Lettuce/Cantaloupe
-1 0.0000000000                          0                           0
-2 0.0000000000                          0                           0
-3 0.0000000000                          0                           0
-4 0.0002819284                          0                           0
-5 0.0000000000                          0                           0
-6 0.0000000000                          0                           0
-7 0.0000000000                          0                           0
-8 0.0000000000                          0                           0
-  Dbl Crop Lettuce/Cotton Dbl Crop Lettuce/Barley Dbl Crop Durum Wht/Sorghum
-1                       0                       0                          0
-2                       0                       0                          0
-3                       0                       0                          0
-4                       0                       0                          0
-5                       0                       0                          0
-6                       0                       0                          0
-7                       0                       0                          0
-8                       0                       0                          0
-  Dbl Crop Barley/Sorghum Dbl Crop WinWht/Sorghum Dbl Crop Barley/Corn
-1                       0            0.0000000000                    0
-2                       0            0.0000000000                    0
-3                       0            0.0000000000                    0
-4                       0            0.0002819284                    0
-5                       0            0.0000000000                    0
-6                       0            0.0000000000                    0
-7                       0            0.0000000000                    0
-8                       0            0.0000000000                    0
-  Dbl Crop WinWht/Cotton Dbl Crop Soybeans/Cotton Dbl Crop Soybeans/Oats
-1                      0                        0                      0
-2                      0                        0                      0
-3                      0                        0                      0
-4                      0                        0                      0
-5                      0                        0                      0
-6                      0                        0                      0
-7                      0                        0                      0
-8                      0                        0                      0
-  Dbl Crop Corn/Soybeans Blueberries Cabbage Cauliflower Celery Radishes
-1                      0           0       0           0      0        0
-2                      0           0       0           0      0        0
-3                      0           0       0           0      0        0
-4                      0           0       0           0      0        0
-5                      0           0       0           0      0        0
-6                      0           0       0           0      0        0
-7                      0           0       0           0      0        0
-8                      0           0       0           0      0        0
-  Turnips Eggplants Gourds Cranberries Dbl Crop Barley/Soybeans
-1       0         0      0           0                        0
-2       0         0      0           0                        0
-3       0         0      0           0                        0
-4       0         0      0           0                        0
-5       0         0      0           0                        0
-6       0         0      0           0                        0
-7       0         0      0           0                        0
-8       0         0      0           0                        0</code></pre>
+<pre><code>  Area_m2  count.Corn count.Sorghum count.Soybeans count.Winter Wheat
+1 3196800 0.349380631  0.0033783784    0.287443694       0.0633445946
+2 3195900 0.328639820  0.0000000000    0.272599268       0.1253168122
+3 3193200 0.000000000  0.0000000000    0.000000000       0.0000000000
+4 3192300 0.018043417  0.0000000000    0.022554271       0.0019734987
+5 3194100 0.005071851  0.0002817695    0.001408848       0.0002817695
+6 3196800 0.248310811  0.0002815315    0.235360360       0.0067567568
+7 3194100 0.000000000  0.0000000000    0.000000000       0.0000000000
+8 3193200 0.025930101  0.0000000000    0.000000000       0.0000000000
+     count.Rye  count.Oats count.Alfalfa count.Other Hay/Non Alfalfa
+1 0.0005630631 0.005630631   0.043918919                 0.024774775
+2 0.0019712757 0.038299071   0.028161081                 0.008166714
+3 0.0000000000 0.000000000   0.000000000                 0.000000000
+4 0.0000000000 0.000000000   0.023118128                 0.115590640
+5 0.0000000000 0.000000000   0.000563539                 0.014088476
+6 0.0000000000 0.000000000   0.034909910                 0.114583333
+7 0.0000000000 0.000000000   0.000000000                 0.000000000
+8 0.0000000000 0.000000000   0.001127396                 0.007046223
+  count.Dry Beans count.Developed/Open Space count.Developed/Low Intensity
+1    0.0121058559                 0.06306306                  0.0194256757
+2    0.0332300760                 0.01464376                  0.0267530273
+3    0.0000000000                 0.05862458                  0.0025366404
+4    0.0000000000                 0.08401466                  0.1034677192
+5    0.0002817695                 0.04846436                  0.0267681037
+6    0.0000000000                 0.08417793                  0.0602477477
+7    0.0000000000                 0.03803888                  0.0002817695
+8    0.0000000000                 0.04565953                  0.0022547914
+  count.Developed/Med Intensity count.Developed/High Intensity count.Barren
+1                  0.0061936937                   0.0005630631 0.0011261261
+2                  0.0126724866                   0.0022528865 0.0000000000
+3                  0.0005636979                   0.0000000000 0.0000000000
+4                  0.1130532845                   0.0386241895 0.0002819284
+5                  0.0092983939                   0.0000000000 0.0019723866
+6                  0.0061936937                   0.0011261261 0.0002815315
+7                  0.0000000000                   0.0000000000 0.0000000000
+8                  0.0002818489                   0.0000000000 0.0019729425
+  count.Deciduous Forest count.Evergreen Forest count.Mixed Forest
+1             0.05011261           0.0028153153        0.006193694
+2             0.03266685           0.0002816108        0.003379330
+3             0.91967306           0.0002818489        0.015783540
+4             0.13363406           0.0298844094        0.085424302
+5             0.11017188           0.0098619329        0.194984503
+6             0.06644144           0.0016891892        0.015765766
+7             0.94618202           0.0025359256        0.010425472
+8             0.62457723           0.1502254791        0.129086809
+  count.Grassland/Pasture count.Barley count.Triticale
+1             0.059966216 0.0000000000    0.0000000000
+2             0.067868206 0.0019712757    0.0005632216
+3             0.002536640 0.0000000000    0.0000000000
+4             0.227234282 0.0002819284    0.0002819284
+5             0.116934348 0.0000000000    0.0002817695
+6             0.123029279 0.0002815315    0.0000000000
+7             0.001127078 0.0000000000    0.0000000000
+8             0.010146561 0.0000000000    0.0000000000
+  count.Dbl Crop WinWht/Corn count.Tomatoes count.Apples count.Shrubland
+1               0.0000000000   0.0000000000 0.0000000000    0.0000000000
+2               0.0005632216   0.0000000000 0.0000000000    0.0000000000
+3               0.0000000000   0.0000000000 0.0000000000    0.0000000000
+4               0.0008457852   0.0002819284 0.0002819284    0.0002819284
+5               0.0000000000   0.0002817695 0.0000000000    0.0002817695
+6               0.0000000000   0.0000000000 0.0002815315    0.0002815315
+7               0.0000000000   0.0000000000 0.0000000000    0.0014088476
+8               0.0000000000   0.0000000000 0.0000000000    0.0002818489
+  count.Dbl Crop Triticale/Corn count.Pumpkins count.Dbl Crop WinWht/Sorghum
+1                  0.0000000000   0.0000000000                  0.0000000000
+2                  0.0000000000   0.0000000000                  0.0000000000
+3                  0.0000000000   0.0000000000                  0.0000000000
+4                  0.0002819284   0.0002819284                  0.0002819284
+5                  0.0000000000   0.0000000000                  0.0000000000
+6                  0.0000000000   0.0000000000                  0.0000000000
+7                  0.0000000000   0.0000000000                  0.0000000000
+8                  0.0000000000   0.0000000000                  0.0000000000
+  count.Open Water count.Woody Wetlands count.Herbaceous Wetlands
+1        0.0000000          0.000000000              0.0000000000
+2        0.0000000          0.000000000              0.0000000000
+3        0.0000000          0.000000000              0.0000000000
+4        0.0000000          0.000000000              0.0000000000
+5        0.4567484          0.001408848              0.0002817695
+6        0.0000000          0.000000000              0.0000000000
+7        0.0000000          0.000000000              0.0000000000
+8        0.0000000          0.001409245              0.0000000000
+  count.Dbl Crop Oats/Corn
+1             0.0000000000
+2             0.0000000000
+3             0.0000000000
+4             0.0000000000
+5             0.0002817695
+6             0.0000000000
+7             0.0000000000
+8             0.0000000000</code></pre>
 </div>
 </div>
 </section>
@@ -833,14 +604,14 @@ Geodetic CRS:  WGS 84
 <h2 class="anchored" data-anchor-id="write-out-shapefiles">Write out shapefiles</h2>
 <p>we can write out vector data to shapefiles using <code>st_write()</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(centre_sites, <span class="st">"data/centre_sites.shp"</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(centre_sites, <span class="st">"data/centre_sites.shp"</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Deleting layer `centre_sites' using driver `ESRI Shapefile'
 Writing layer `centre_sites' to data source 
   `data/centre_sites.shp' using driver `ESRI Shapefile'
 Writing 8 features with 1 fields and geometry type Point.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(centre_sites_1000m, <span class="st">"data/centre_sites_buffer_1000m.shp"</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(centre_sites_1000m, <span class="st">"data/centre_sites_buffer_1000m.shp"</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Deleting layer `centre_sites_buffer_1000m' using driver `ESRI Shapefile'
 Writing layer `centre_sites_buffer_1000m' to data source 
@@ -904,13 +675,14 @@ Writing 8 features with 1 fields and geometry type Polygon.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Welcome to the BeeSpatial Tutorial – BeeSpatial Tutorial</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -35,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b2c493fdd487b110f6b1348dfd6a5174.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-05671fd07ca6d6876311839a4a0c21df.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -196,7 +202,9 @@ ul.task-list li input[type="checkbox"] {
 </header> 
       <div class="about-contents"><main class="content" id="quarto-document-content">
 
-<p><a href="https://beesuite.psu.edu/beespatial/"><strong>BeeSpatial</strong></a> is a companion web application to <a href="https://beescape.psu.edu/">Beescape</a>. It provides researchers with access to pollinator habitat quality indices that assess <strong>nesting suitability</strong>, <strong>floral resources</strong>, and <strong>toxicity of potentially applied insecticides</strong>. It also hosts base data layers on <strong>land cover</strong> and <strong>climate</strong>. Data are available from 2008 to the most recent available year (currently 2024).</p>
+<p><a href="https://beesuite.psu.edu/beespatial/"><strong>BeeSpatial</strong></a> is a companion web application to <a href="https://beescape.psu.edu/">Beescape</a>. It provides researchers with access to pollinator habitat quality indices that assess <strong>nesting suitability</strong>, <strong>floral resources</strong>, and <strong>toxicity of potentially applied insecticides</strong>. It also hosts base data layers on <strong>land cover</strong> and <strong>climate</strong>. Data are available from 2008 to the most recent available year (currently 2025).</p>
+<p>Check out our open-access publication about these applications:</p>
+<p>Li K, Grab H, Buckner MA, et al (2026) Beescape and BeeSpatial: Making multi-scale environmental indicators of bee habitat accessible across audiences. <em>Environmental and Sustainability Indicators</em> 31:101381. <a href="https://doi.org/10.1016/j.indic.2026.101381">https://doi.org/10.1016/j.indic.2026.101381</a></p>
 <section id="how-to-use-beespatial" class="level2">
 <h2 data-anchor-id="how-to-use-beespatial">How to use BeeSpatial</h2>
 <p>There are two ways of getting data from BeeSpatial:</p>
@@ -265,13 +273,14 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
